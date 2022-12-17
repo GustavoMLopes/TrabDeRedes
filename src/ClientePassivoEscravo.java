@@ -38,7 +38,7 @@ public class ClientePassivoEscravo {
 	}
 
 	public void enviaDados(String dado) throws IOException {
-		// l� msgs do teclado e manda pro servidor
+		// le msgs do teclado e manda pro servidor
 		this.saida = new PrintStream(this.socketCliente.getOutputStream());
 		
 		this.saida.println(dado);

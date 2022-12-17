@@ -17,6 +17,13 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Color;
 
 public class JogoDaVelha extends JFrame {
+	private int lenMatriz = 3;
+	public String nomeJogador = "";
+	public String nomeOponente = "";
+	private Cliente cliente;
+
+	JLabel lblNomeJogador = new JLabel();
+	JLabel lblNomeJogo = new JLabel();
 	
 	public int[][] matrizVelha = {
 									  {0, 0, 0},
@@ -25,28 +32,29 @@ public class JogoDaVelha extends JFrame {
 								  };
 	
 	private JPanel contentPane;
-	private JButton button_00 = new JButton("");
-	private JButton button_01 = new JButton("");
-	private JButton button_02 = new JButton("");
-	private JButton button_10 = new JButton("");
-	private JButton button_11 = new JButton("");
-	private JButton button_12 = new JButton("");
-	private JButton button_20 = new JButton("");
-	private JButton button_21 = new JButton("");
-	private JButton button_22 = new JButton("");
-	
-	public JButton[][] matrizVelhaBotao = {
-			  {button_00, button_01, button_02},
-			  {button_10, button_11, button_12},
-			  {button_20, button_21, button_22}
-		  };
-	
-	public String nomeJogador = "";
-	public String nomeOponente = "";
-	private Cliente cliente;
+	public JButton[][] matrizVelhaBotao = new JButton[lenMatriz][lenMatriz];
 
-	JLabel lblNomeJogador = new JLabel();
-	JLabel lblNomeJogo = new JLabel();
+	public BtnBound[][] matrixBtnBounds = {
+		//linha 0
+		{
+			new BtnBound(125, 72, 50, 50), //coluna 0
+			new BtnBound(185, 72, 50, 50), //coluna 1
+			new BtnBound(245, 72, 50, 50) 	//coluna 2
+		},
+		//linha 1
+		{
+			new BtnBound(125, 133, 50, 50),//coluna 0
+			new BtnBound(185, 133, 50, 50),//coluna 1
+			new BtnBound(245, 133, 50, 50)	//coluna 2
+		},
+		//linha 2
+		{
+			new BtnBound(125, 190, 50, 50),//coluna 0
+			new BtnBound(185, 190, 50, 50),//coluna 1
+			new BtnBound(245, 190, 50, 50)	//coluna 2
+		},
+	};
+
 	
 	public JogoDaVelha(String nomeJogador, String nomeOponente, Cliente cliente) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,180 +73,7 @@ public class JogoDaVelha extends JFrame {
 		
 		lblNomeJogador.setText(this.nomeJogador);
 		lblNomeJogo.setText(this.nomeJogador + " Vs. " + this.nomeOponente);
-		
-		button_00.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_00.getText() != ""){
-					return;
-				}
-				
-				int linha = 0;
-				int coluna = 0;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		button_00.setBounds(125, 72, 50, 50);
-		layeredPane.add(button_00);
-		
-		button_10.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_10.getText() != ""){
-					return;
-				}
-				
-				int linha = 1;
-				int coluna = 0;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-
-		button_10.setBounds(125, 133, 50, 50);
-		layeredPane.add(button_10);
-		
-		button_20.setBounds(125, 190, 50, 50);
-		button_20.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_20.getText() != ""){
-					return;
-				}
-				
-				int linha = 2;
-				int coluna = 0;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		layeredPane.add(button_20);
-
-		button_11.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_11.getText() != ""){
-					return;
-				}
-				
-				int linha = 1;
-				int coluna = 1;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		button_11.setBounds(185, 133, 50, 50);
-		layeredPane.add(button_11);
-		
-		button_01.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_01.getText() != ""){
-					return;
-				}
-				
-				int linha = 0;
-				int coluna = 1;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		button_01.setBounds(185, 72, 50, 50);
-		layeredPane.add(button_01);
-		
-		button_21.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_21.getText() != ""){
-					return;
-				}
-				
-				int linha = 2;
-				int coluna = 1;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-
-				habilitaBotoes();
-			}
-		});
-		button_21.setBounds(185, 190, 50, 50);
-		layeredPane.add(button_21);
-		
-
-		button_02.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_02.getText() != ""){
-					return;
-				}
-				
-				int linha = 0;
-				int coluna = 2;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		button_02.setBounds(245, 72, 50, 50);
-		layeredPane.add(button_02);
-		
-
-		button_12.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_12.getText() != ""){
-					return;
-				}
-				
-				int linha = 1;
-				int coluna = 2;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		button_12.setBounds(245, 133, 50, 50);
-		layeredPane.add(button_12);
-		
-		button_22.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if(button_22.getText() != ""){
-					return;
-				}
-				
-				int linha = 2;
-				int coluna = 2;
-				
-				matrizVelhaBotao[linha][coluna].setText("O");
-				
-				int valor = cliqueBotaoVelha(linha, coluna);
-				
-				habilitaBotoes();
-			}
-		});
-		button_22.setBounds(245, 190, 50, 50);
-		layeredPane.add(button_22);
+		montaMatriz(layeredPane);
 		
 		JLabel lblJogador = new JLabel("Turno:");
 		lblJogador.setBounds(10, 11, 78, 14);
@@ -263,7 +98,30 @@ public class JogoDaVelha extends JFrame {
 			habilitaBotoes();
 		}
 	}
-	
+
+	public void montaMatriz(JLayeredPane layeredPane){
+		for(int i = 0; i < lenMatriz; i++){
+			for(int  j = 0; j < lenMatriz; j++){
+				matrizVelhaBotao[i][j] = new JButton("");
+				JButton btn = matrizVelhaBotao[i][j];
+				final int linha = i;
+				final int coluna = j;
+				btn.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						if(btn.getText() != "")
+							return;
+						btn.setText("O");
+						cliqueBotaoVelha(linha, coluna);
+						habilitaBotoes();
+					}
+				});
+				BtnBound btnConfig = matrixBtnBounds[i][j];
+				btn.setBounds(btnConfig.x, btnConfig.y, btnConfig.width, btnConfig.height);
+				layeredPane.add(btn);
+			}
+		}
+	}
+
 	public void habilitaBotoes() {
 		for(int i=0; i < 3; i++){
 			for(int j=0; j < 3; j++){
@@ -305,34 +163,30 @@ public class JogoDaVelha extends JFrame {
 		}
 		
 		limparVelha();
-		JOptionPane.showMessageDialog(null, "O jogo terminou empatado.");	
+		JOptionPane.showMessageDialog(null, "Deu Velha!");	
 		return 2;
 	}
 	
 	 public int checaLinhas(){
         for(int linha=0 ; linha<3 ; linha++){
-
             if( (this.matrizVelha[linha][0] + this.matrizVelha[linha][1] + this.matrizVelha[linha][2]) == -3)
                 return -1;
             if( (this.matrizVelha[linha][0] + this.matrizVelha[linha][1] + this.matrizVelha[linha][2]) == 3)
                 return 1;
         }
-        
-        return 0;
-                
+		
+        return 0;       
     }
 	    
     public int checaColunas(){
         for(int coluna=0 ; coluna<3 ; coluna++){
-
             if( (this.matrizVelha[0][coluna] + this.matrizVelha[1][coluna] + this.matrizVelha[2][coluna]) == -3)
                 return -1;
             if( (this.matrizVelha[0][coluna] + this.matrizVelha[1][coluna] + this.matrizVelha[2][coluna]) == 3)
                 return 1;
         }
-        
-        return 0;
-                
+
+        return 0;       
     }
     
     public int checaDiagonais(){
@@ -349,7 +203,6 @@ public class JogoDaVelha extends JFrame {
     }
     
     public int cliqueBotaoVelha(int linha, int coluna) {
-    	
     	try {
 			cliente.enviaDados("jogar;" + cliente.getId() + ";" + linha + ";" + coluna);
 		} catch (IOException e) {
@@ -362,11 +215,11 @@ public class JogoDaVelha extends JFrame {
 		preencheMatriz(linha, coluna, valor);
 		int retorno = verificaMatriz();
 		if(retorno == 1){
-			JOptionPane.showMessageDialog(null, nomeJogador+" venceu o jogo!");
+			JOptionPane.showMessageDialog(null, nomeJogador+" ganhou!");
 			limparVelha();
 			return 0;
 		}else if(retorno == -1){
-			JOptionPane.showMessageDialog(null, nomeOponente+" venceu o jogo!");
+			JOptionPane.showMessageDialog(null, nomeOponente+" ganhou!");
 			limparVelha();
 			return 0;
 		}else if(retorno == 2){
@@ -377,20 +230,11 @@ public class JogoDaVelha extends JFrame {
     }
     
     public void limparVelha(){
-    	for(int i=0; i < 3; i++){
-			for(int j=0; j < 3; j++){
+		for(int i = 0;  i < lenMatriz; i++){
+			for(int j = 0; j < lenMatriz; j++){
 				matrizVelha[i][j] = 0;				
+				matrizVelhaBotao[i][j].setText("");
 			}
-		}
-    	
-    	button_00.setText("");
-    	button_01.setText("");
-    	button_02.setText("");
-       	button_10.setText("");
-    	button_11.setText("");
-    	button_12.setText("");
-    	button_20.setText("");
-    	button_21.setText("");
-    	button_22.setText("");    	
+		}	
     }
 }

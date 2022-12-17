@@ -1,6 +1,4 @@
 import java.io.PrintStream;
-
-
 public class ClientePassivo {
 
 	String login;

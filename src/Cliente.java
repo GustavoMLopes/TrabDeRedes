@@ -3,18 +3,19 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
 
 
 public class Cliente {
 
 	private String host;
-	private int porta;
-	private Socket socketCliente;
-	PrintStream saida;
 	private String id;
 	private String idOponente;
 	private String login;
+	private int porta;
+	private Socket socketCliente;
+	
+	PrintStream saida;
+
 	private static Cliente cliente;
 
 
@@ -27,67 +28,47 @@ public class Cliente {
 
 	public void executa() throws UnknownHostException, IOException {
 		this.socketCliente = new Socket(this.host, this.porta);
-		System.out.println("O cliente se conectou ao servidor!");
-		
+		System.out.println("ConexÃ£o com servidor efetuada!");
 		InputStream is = this.socketCliente.getInputStream();
 		Recebedor rec = new Recebedor(is);
 		Thread t = new Thread(rec);
 		t.start();
 	}
 	
-	public void enviaDados(String dado) throws IOException {
-		// lê msgs do teclado e manda pro servidor
+	public void enviaDados(String msg) throws IOException {
+		// le msgs do teclado e manda pro servidor
 		this.saida = new PrintStream(this.socketCliente.getOutputStream());
-		
-		this.saida.println(dado);
+		this.saida.println(msg);
 	}
-	
-	/*public String recebeDados() throws IOException {
-		String retorno = "";	
-		InputStream is = this.socketCliente.getInputStream();
-		
-		// recebe msgs do servidor e imprime na tela
-		Scanner s = new Scanner(is);
-		
-		retorno = s.nextLine();
-		
-		return retorno;
-	}*/
 	
 	public void fechaConexao() throws IOException{
 		this.saida.close();
 		this.socketCliente.close();
 	}
+	
+	// --- getters ---
+	public String getId() {	return id; }
+	public String getIdOponente() { return idOponente; }
+	public String getLogin() { return login; }
 
-	public String getId() {
-		return id;
-	}
-
+	// --- setters ---
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	public String getIdOponente() {
-		return idOponente;
-	}
-
-	public void setIdOponente(String idOponente) {
+	public void setIdOponente(String idOponente){
 		this.idOponente = idOponente;
 	}
+
 	
-	public static synchronized Cliente getInstance() 
-	{
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
+	public static synchronized Cliente getInstance(){
 		if (cliente == null) {
 			cliente = new Cliente("127.0.0.1", 11111, "Login");
 		}
 		return cliente;
-	}
-	
-	public String getLogin() {
-		return login;
-	}
-	
-	public void setLogin(String login) {
-		this.login = login;
 	}
 }
