@@ -22,7 +22,7 @@ public class Login extends JFrame {
 	public static JTextField txtNomeJogador;
 	private JButton btnJogar;
 	private JLabel lblEntreComSeu;
-	private JButton btnOlhar;
+	// private JButton btnOlhar;
 	private JLayeredPane layeredPane;
 	private final JLabel lblCarregando;
 	private Cliente cliente;
@@ -62,7 +62,7 @@ public class Login extends JFrame {
 		lblEntreComSeu.setBounds(10, 11, 167, 14);
 		layeredPane.add(lblEntreComSeu);
 		
-		lblCarregando = new JLabel("Aguardando Oponente...");
+		lblCarregando = new JLabel("Conectado, aguardando Oponente...");
 		lblCarregando.setForeground(Color.white);
 		lblCarregando.setVisible(false);
 		lblCarregando.setBounds(10, 226, 246, 14);
@@ -86,19 +86,15 @@ public class Login extends JFrame {
 					cliente.enviaDados("logar;"+txtNomeJogador.getText());
 					
 					lblCarregando.setVisible(true);
-					JOptionPane.showMessageDialog(null, "Conectado !");
+					//JOptionPane.showMessageDialog(null, "Conectado !");
 		
 				} catch (IOException e) {
 					lblCarregando.setVisible(false);
-					JOptionPane.showMessageDialog(null, "Erro na conex�o!");
+					JOptionPane.showMessageDialog(null, "Erro na conexao!");
 					e.printStackTrace();
 				}
 			}
-		});
-		
-		btnOlhar = new JButton("Olhar");
-		btnOlhar.setBounds(226, 188, 89, 23);
-		layeredPane.add(btnOlhar);		
+		});	
 		
 		ipServidor = new JTextField();
 		ipServidor.setColumns(10);
@@ -119,24 +115,5 @@ public class Login extends JFrame {
 		lblEntreComA.setBounds(10, 132, 167, 14);
 		lblEntreComA.setForeground(Color.white);
 		layeredPane.add(lblEntreComA);
-		
-		btnOlhar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {				
-				try {
-					cliente = new Cliente(ipServidor.getText(), Integer.parseInt(portaServidor.getText()), txtNomeJogador.getText());
-					cliente.executa();
-					cliente.enviaDados("logarPassivo;"+txtNomeJogador.getText());
-					
-					lblCarregando.setVisible(true);
-					JOptionPane.showMessageDialog(null, "Conectado !");
-		
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					lblCarregando.setVisible(false);
-					JOptionPane.showMessageDialog(null, "Erro na conex�o!");
-					e.printStackTrace();
-				}
-			}
-		});
 	}
 }
