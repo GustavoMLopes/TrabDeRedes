@@ -5,11 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.io.IOException;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import javax.swing.JLayeredPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -30,6 +33,7 @@ public class Login extends JFrame {
 	private JTextField portaServidor;
 
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -42,6 +46,32 @@ public class Login extends JFrame {
 		});
 	}
 	
+	public boolean servidorCheio(String ip) throws SocketException{
+		int portaUdp = 8100;
+		byte[] sendData = new byte[1024];
+		byte[] receiveData = new byte[1024];
+		boolean cheio = true;
+		try (DatagramSocket clientSocket = new DatagramSocket()) {
+			InetAddress ipServidor = InetAddress.getByName(ip);
+			sendData = "".getBytes();
+  
+			DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipServidor, portaUdp);
+			clientSocket.send(sendPacket);
+			DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+			clientSocket.receive(receivePacket);
+			clientSocket.close();
+			String response = new String(receivePacket.getData()).trim();
+			
+			if(Integer.parseInt(response) < 2)
+				cheio = false;
+				
+		} catch (SocketException e) {
+			throw e;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return cheio;
+	}
 	/**
 	 * Create the frame.
 	 */
@@ -81,7 +111,11 @@ public class Login extends JFrame {
 		btnJogar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					cliente = new Cliente(ipServidor.getText(), Integer.parseInt(portaServidor.getText()), txtNomeJogador.getText());
+					String ip = ipServidor.getText();
+					if(servidorCheio(ip)){
+						throw new Exception("Servidor cheio, tente mais tarde");
+					}
+					cliente = new Cliente(ip, Integer.parseInt(portaServidor.getText()), txtNomeJogador.getText());
 					cliente.executa();
 					cliente.enviaDados("logar;"+txtNomeJogador.getText());
 					
@@ -91,6 +125,10 @@ public class Login extends JFrame {
 				} catch (IOException e) {
 					lblCarregando.setVisible(false);
 					JOptionPane.showMessageDialog(null, "Erro na conexao!");
+					e.printStackTrace();
+				} catch(Exception e){
+					lblCarregando.setVisible(false);
+					JOptionPane.showMessageDialog(null, "Servidor cheio!");
 					e.printStackTrace();
 				}
 			}
