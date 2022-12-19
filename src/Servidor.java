@@ -10,7 +10,6 @@ import java.util.Map;
 
 
 public class Servidor {
-	private static byte[] receiveData = new byte[1024];
 	public static void main(String[] args) throws IOException {
 		// inicia o servidor
 		new Servidor(11111).executa();
